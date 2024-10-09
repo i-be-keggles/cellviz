@@ -36,7 +36,7 @@ public:
     // TODO: Add a move constructor, copy assignment operator, and move assignment operator.
 
 
-private:
+public:
     int width;
     int height;
     BoardType type;
