@@ -1,13 +1,23 @@
 #include <SFML/Graphics.hpp>
-#include <cstdlib> // for rand()
-#include <ctime>   // for time()
+#include <cstdlib>
+#include <ctime>
 
-int main() {
+#include "backend/cellviz.h"
+#include "backend/board.h"
+#include "backend/cells.h"
+
+void update_window(Board board, sf::RenderWindow &window){
+    for (int x = 0; x < window.getSize().x; ++x) {
+        for (int y = 0; y < window.getSize().y; ++y) {
+            CellularAutomaton * c = board.get_cell(x,y);
+        }
+    }
+}
+
+void do_window_thing(sf::RenderWindow &window){
     // Seed the random number generator
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
-    // Create a window with the size of 800x600
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Random Color Pixels with SFML");
 
     // Main loop
     while (window.isOpen()) {
@@ -35,6 +45,27 @@ int main() {
 
         // Display the contents of the window
         window.display();
+    }
+}
+
+int main() {
+    int size = 100;
+
+    Board board = initialise_board(size);
+
+    sf::RenderWindow window = sf::RenderWindow(sf::VideoMode(size, size), "Cellular automaton visualiser");
+
+    while (window.isOpen()) {
+        SmithLife::compute(&board);
+        update_window(board, window);
+    }
+
+    int runtime = 1000;
+    runtime = 0;
+
+    for(int i = 0; i < runtime; i++){
+        SmithLife::compute(&board);
+        update_window(board, window);
     }
 
     return 0;
